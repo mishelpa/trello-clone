@@ -16,4 +16,28 @@ export class BoardsComponent {
   faBorderAll = faBorderAll;
   faUsers = faUsers;
   faGear = faGear;
+
+  items = [
+    {
+      label: 'Item1',
+      items: [
+        { label: 'sub Item 1.1' },
+        { label: 'sub Item 1.2' }
+      ]
+    },
+    {
+      label: 'Item2',
+      items: [
+        { label: 'sub Item 2.1' },
+      ]
+    },
+    {
+      label: 'Item3',
+      items: [
+        { label: 'sub Item 3.1' },
+        { label: 'sub Item 3.2' },
+        { label: 'sub Item 3.3' }
+      ]
+    }
+  ]
 }
