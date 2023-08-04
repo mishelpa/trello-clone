@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Column, ToDo } from 'src/app/models/todo.model';
 import { faPlus, faX } from '@fortawesome/free-solid-svg-icons';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { Dialog } from '@angular/cdk/dialog';
+import { TodoDialogComponent } from 'src/app/components/todo-dialog/todo-dialog.component';
 
 @Component({
   selector: 'app-board',
@@ -71,7 +73,7 @@ export class BoardComponent implements OnInit {
 
   done: ToDo[] = [];
 
-  constructor(private fb: UntypedFormBuilder){}
+  constructor(private fb: UntypedFormBuilder, private dialog: Dialog){}
 
   ngOnInit(): void {
     this.buildForm();
@@ -134,5 +136,13 @@ export class BoardComponent implements OnInit {
   closeColumn() {
     this.show = false;
     this.formColumn.controls['newColumn'].setValue('');
+  }
+
+  openDialog() {
+    this.dialog.open(TodoDialogComponent, {
+      minWidth: '300px',
+      maxWidth: '50%',
+      autoFocus: false
+    })
   }
 }
