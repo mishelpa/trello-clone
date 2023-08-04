@@ -1,6 +1,8 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component } from '@angular/core';
-import { ToDo } from 'src/app/models/todo.model';
+import { Component, OnInit } from '@angular/core';
+import { Column, ToDo } from 'src/app/models/todo.model';
+import { faPlus, faX } from '@fortawesome/free-solid-svg-icons';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-board',
@@ -19,32 +21,70 @@ import { ToDo } from 'src/app/models/todo.model';
     `
   ]
 })
-export class BoardComponent {
+export class BoardComponent implements OnInit {
 
-  todos: ToDo[] = [
+  formAdd!: UntypedFormGroup;
+  formColumn!: UntypedFormGroup;
+  faPlus = faPlus;
+  faX = faX;
+  show: boolean = false;
+  columns: Column[] = [
     {
-      id: '1',
-      title: 'Make dishes'
+      title: 'To Do',
+      todos: [
+        {
+          id: '1',
+          title: 'Make dishes'
+        },
+        {
+          id: '2',
+          title: 'Buy a unicorn'
+        }
+      ],
+      show: false
     },
     {
-      id: '2',
-      title: 'Buy a unicorn'
+      title: 'Doing',
+      todos: [
+        {
+          id: '3',
+          title: 'Watch Angular Path in Platzi'
+        }
+      ],
+      show: false
+    },
+    {
+      title: 'Done',
+      todos: [
+        {
+          id: '4',
+          title: 'Play video games'
+        }
+      ],
+      show: false
     }
   ];
 
-  doing: ToDo[] = [
-    {
-      id: '3',
-      title: 'Watch Angular Tutorials'
-    }
-  ];
+  todos: ToDo[] = [];
 
-  done: ToDo[] = [
-    {
-      id: '4',
-      title: 'Play video games'
-    }
-  ];
+  doing: ToDo[] = [];
+
+  done: ToDo[] = [];
+
+  constructor(private fb: UntypedFormBuilder){}
+
+  ngOnInit(): void {
+    this.buildForm();
+  }
+
+  buildForm() {
+      this.formAdd = this.fb.group({
+        task: [''],
+      });
+      this.formColumn = this.fb.group({
+        newColumn: [''],
+    });
+  }
 
   drop( event: CdkDragDrop<ToDo[]> ) {
     if( event.previousContainer == event.container) {
@@ -57,6 +97,42 @@ export class BoardComponent {
         event.currentIndex
       )
     }
+  }
 
+  drop1(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+  }
+
+  addColumn() {
+    if(this.formColumn.controls['newColumn'].value) {
+      this.columns.push({
+        title: this.formColumn.controls['newColumn'].value,
+        todos: [],
+        show: false,
+      })
+      this.show = false;
+      this.formColumn.controls['newColumn'].setValue('')
+    }
+  }
+
+  addTask(col: Column) {
+    if(this.formAdd.controls['task'].value) {
+      col.todos.push(
+        { id: (col.todos.length + 1).toString(),
+          title: this.formAdd.controls['task'].value
+        }
+      );
+      this.close(col)
+    }
+  }
+
+  close(col: Column) {
+    col.show = false;
+    this.formAdd.controls['task'].setValue('');
+  }
+
+  closeColumn() {
+    this.show = false;
+    this.formColumn.controls['newColumn'].setValue('');
   }
 }
