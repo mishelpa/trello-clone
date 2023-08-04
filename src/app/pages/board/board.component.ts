@@ -73,7 +73,7 @@ export class BoardComponent implements OnInit {
 
   done: ToDo[] = [];
 
-  constructor(private fb: UntypedFormBuilder, private dialog: Dialog){}
+  constructor(private fb: UntypedFormBuilder, private dialog: Dialog ){}
 
   ngOnInit(): void {
     this.buildForm();
@@ -138,11 +138,17 @@ export class BoardComponent implements OnInit {
     this.formColumn.controls['newColumn'].setValue('');
   }
 
-  openDialog() {
-    this.dialog.open(TodoDialogComponent, {
+  openDialog(todo: ToDo) {
+    const dialogRef = this.dialog.open(TodoDialogComponent, {
       minWidth: '300px',
       maxWidth: '50%',
-      autoFocus: false
+      autoFocus: false,
+      data: {
+        todo
+      }
+    });
+    dialogRef.closed.subscribe(output => {
+      console.log(output);
     })
   }
 }
