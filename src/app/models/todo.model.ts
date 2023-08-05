@@ -8,3 +8,10 @@ export interface Column {
   todos: ToDo[];
   show: boolean;
 }
+
+export interface Product {
+  id: string;
+  title: string;
+  images: string[];
+  price: Number
+}
