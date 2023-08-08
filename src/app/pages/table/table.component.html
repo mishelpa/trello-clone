@@ -1,0 +1,40 @@
+<div class="flex flex-col h-screen">
+  <app-navbar></app-navbar>
+  <div class="w-full grow bg-white-600 p-6">
+    <input type="search" [formControl]="input">
+    <table class="w-full text-sm text-left text-gray-500" cdk-table [dataSource]="dataSource">
+      <tr class="text-xs text-gray-700 uppercase bg-gray-50" cdk-header-row *cdkHeaderRowDef="columns"></tr>
+      <tr class="bg-white border-b" [ngClass]="{'bg-green-200': row.price < 200}"  cdk-row *cdkRowDef="let row; columns: columns"></tr>
+      <tr class="text-xs text-gray-700 uppercase bg-gray-200" cdk-footer-row *cdkFooterRowDef="columns"></tr>
+      <ng-container cdkColumnDef="id">
+        <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef>Id.</th>
+        <td class="px-6 py-4" cdk-cell *cdkCellDef="let row">{{ row.id }}</td>
+        <th class="px-6 py-3" cdk-footer-cell *cdkFooterCellDef></th>
+      </ng-container>
+      <ng-container cdkColumnDef="title">
+        <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef>Title.</th>
+        <td class="px-6 py-4" cdk-cell *cdkCellDef="let row">{{ row.title }}</td>
+        <th class="px-6 py-3" cdk-footer-cell *cdkFooterCellDef></th>
+      </ng-container>
+      <ng-container cdkColumnDef="price">
+        <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef>Price.</th>
+        <td class="px-6 py-4" [ngClass]="{'bg-red-200': row.price < 100}" cdk-cell *cdkCellDef="let row">{{ row.price }}</td>
+        <th class="px-6 py-3" cdk-footer-cell *cdkFooterCellDef>{{total}}</th>
+      </ng-container>
+      <ng-container cdkColumnDef="image">
+        <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef>Image.</th>
+        <td class="px-6 py-4" cdk-cell *cdkCellDef="let row">
+          <img class="w-20" [src]="row.images[0]" alt="">
+        </td>
+        <th class="px-6 py-3" cdk-footer-cell *cdkFooterCellDef></th>
+      </ng-container>
+      <ng-container cdkColumnDef="actions">
+        <th class="px-6 py-3" cdk-header-cell *cdkHeaderCellDef>Actions</th>
+        <td class="px-6 py-4" cdk-cell *cdkCellDef="let row">
+          <app-btn (click)="update(row)">Update</app-btn>
+        </td>
+        <th class="px-6 py-3" cdk-footer-cell *cdkFooterCellDef></th>
+      </ng-container>
+    </table>
+  </div>
+</div>
